@@ -1,31 +1,20 @@
 package ru.geekbrains.education.mappers;
 
-import ru.geekbrains.education.identities.ClientIdentityMap;
+import ru.geekbrains.education.DBConnector;
 import ru.geekbrains.education.model.Client;
 
 import java.sql.*;
 
-public class ClientMapper {
+public class ClientMapper extends AbstractMapper<Client>{
+
     public ClientMapper() {
     }
 
-    public static Client getClient(int key) throws Exception {
-        Client client = ClientIdentityMap.isInto(key);
-        if (client != null) {
-            return client;
-        } else {
-            Client newClient = findClientById(key);
-            ClientIdentityMap.add(newClient);
-            return newClient;
-        }
-    }
-
-    private static Client findClientById(long id) {
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/test",
-                "root", "RootRoot1")) {
-            Statement stat = conn.createStatement();
+    @Override
+    protected Client findById(long id) {
+        try {
             String query = "select * from clients where id = " + '\'' + id + '\'';
-            ResultSet rs = stat.executeQuery(query);
+            ResultSet rs = DBConnector.getInstance().executeQuery(query);
             if (rs.next()) {
                 String name = rs.getString("fullname");
                 int age = rs.getInt("age");
