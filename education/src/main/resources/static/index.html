@@ -1,0 +1,76 @@
+<!doctype html>
+
+<html ng-app="app">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+    <script src="index.js"></script>
+</head>
+
+<body>
+
+<div class="container" ng-controller="indexController">
+    <h1>Lessons</h1>
+
+    </br>
+    <h3>Фильтры</h3>
+    <form novalidate ng-submit="fillTable()">
+        <div class="form-group row">
+            <div class="form-group col-md-3">
+                <label for="filterSpecialisation">Название предмета</label>
+                <input class="form-control" type="text" ng-model="filter.specialisation" id="filterSpecialisation">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="filterTopic">Тема занятия</label>
+                <input class="form-control" type="text" ng-model="filter.topic" id="filterTopic">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="filterMinDuration">Минимальная длительность</label>
+                <input class="form-control" type="number" step="1" min="1" ng-model="filter.min_duration"
+                       id="filterMinDuration">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="filterMaxDuration">Максимальная длительность</label>
+                <input class="form-control" type="number" step="1" min="1" ng-model="filter.max_duration"
+                       id="filterMaxDuration">
+            </div>
+        </div>
+        <div>
+            <button class="btn btn-success" type="submit">Применить</button>
+        </div>
+    </form>
+
+    <br><br>
+
+    <h3>Список занятий</h3>
+    <table class="table table-hover" cellpadding="0" cellspacing="0">
+        <thead>
+        <tr>
+            <td>#</td>
+            <td>Предмет</td>
+            <td>Тема</td>
+            <td>Длительность</td>
+            <td>Преподаватель</td>
+            <td>Студент</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="l in LessonsPage.content">
+            <td>{{l.id}}</td>
+            <td>{{l.specialisation}}</td>
+            <td>{{l.topic}}</td>
+            <td>{{l.duration}}</td>
+            <td>{{l.teacher.fullName}}</td>
+            <td>{{l.client.fullName}}</td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>
