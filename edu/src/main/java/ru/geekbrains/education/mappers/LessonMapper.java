@@ -1,31 +1,20 @@
 package ru.geekbrains.education.mappers;
 
-import ru.geekbrains.education.identities.LessonIdentityMap;
+import ru.geekbrains.education.DBConnector;
 import ru.geekbrains.education.model.Lesson;
 
 import java.sql.*;
 
-public class LessonMapper {
+public class LessonMapper extends AbstractMapper<Lesson> {
+
     public LessonMapper() {
     }
 
-    public static Lesson getLesson(int key) throws Exception {
-        Lesson lesson = LessonIdentityMap.isInto(key);
-        if (lesson != null) {
-            return lesson;
-        } else {
-            Lesson newLesson = findLessonById(key);
-            LessonIdentityMap.add(newLesson);
-            return newLesson;
-        }
-    }
-
-    private static Lesson findLessonById(long id) {
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/test",
-                "root", "RootRoot1")) {
-            Statement stat = conn.createStatement();
+    @Override
+    protected Lesson findById(long id) {
+        try {
             String query = "select * from lessons where id = " + '\'' + id + '\'';
-            ResultSet rs = stat.executeQuery(query);
+            ResultSet rs = DBConnector.getInstance().executeQuery(query);
             if (rs.next()) {
                 String specialisation = rs.getString("specialisation");
                 String topic = rs.getString("topic");
